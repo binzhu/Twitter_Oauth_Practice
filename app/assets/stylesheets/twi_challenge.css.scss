@@ -1,0 +1,22 @@
+// Place all the styles related to the twi_challenge controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.fix{
+    clear: both;
+}
+section#user-list{
+    width: 1000px;
+    margin: 30px auto 0 auto;
+    
+}
+.user-profile{
+    width: 380px;
+    float: left;
+    min-height: 70px;
+}
+#friend_pagination{
+    height: 30px;
+}
+.pagenum{
+    display: inline;
+}

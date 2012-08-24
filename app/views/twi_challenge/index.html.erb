@@ -1,0 +1,31 @@
+<%if !session[:user_id].nil?%>
+<br />
+<br />
+  <!--image_tag @image["profile_image_url"]-->
+  <section id="user-list">
+    <div id="friend_pagination">
+      <% for i in 1..@pagcnt%>
+        <div class="pagenum" id="<%=i%>">
+          <%=link_to i, :page=>i%>
+        </div>
+      <%end%>
+    </div>
+  <%@profile.each do |prof|%>
+    <%if !prof.nil?%>
+      <div class="user-profile">
+        <%=image_tag prof[1]%>
+        <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
+        <%=prof[0]%>
+      </div>
+    <%end%>
+  <%end%>
+  </section>
+  <!--debug info start-->
+  <%if false%><!--debug info closed-->
+  <%=session[:request_token].inspect%>
+  <br />
+  <br />
+  <%=session[:access_token].inspect%>
+  <%end%>
+  <!--debug info end-->
+<%end%>
