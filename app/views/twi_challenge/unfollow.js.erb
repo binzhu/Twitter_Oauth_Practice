@@ -1,0 +1,8 @@
+//alert("unfollowed");
+
+<%@unf_ids.each do |id|%>
+$('input[value="<%=id%>"]').parents(".user-profile-padding").fadeOut()    
+<%end%>
+
+$('#waitMsg').hide();
+

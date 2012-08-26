@@ -4,24 +4,40 @@
 .fix{
     clear: both;
 }
+
 section#user-list{
     width: 1000px;
     margin: 30px auto 0 auto;
+    background-color: #BFEFFF ;
     
 }
-.user-profile{
-    width: 380px;
+.user-profile-padding{
+    width: 330px;
     float: left;
-    min-height: 70px;
+    min-height: 60px;
+    padding: 10px;
+    /*background: lightgreen;*/
 }
+.user-profile{
+    width: 300px;
+    background: #B2DFEE ;
+    margin-left: 10px;
+}
+.user-profile:hover{
+    background: #88DDDD  ;
+    cursor: pointer;
+}
+
 #friend_pagination{
     height: 30px;
+    padding-left: 100px;
 }
 .pagenum{
     display: inline;
 }
-span.crt_page{
-    background: grey;
+.crt_page{
+    display: inline;
+    background: #B2DFEE;
 }
 #search_user{
     margin: 10px auto 10px auto;
@@ -29,3 +45,30 @@ span.crt_page{
 #search_user form{
     margin: auto;
 }
+#userbox{
+    float: left;
+    /*background: lime;*/
+    width: 700px;
+}
+#sidebox{
+    float: right;
+    margin: 10px;
+    padding: 10px;
+    width: 260px;
+    background: #B2DFEE;
+}
+
+
+
+/*########about page############*/
+section#about{
+    width: 1000px;
+    margin: 30px auto 0 auto;
+    background-color: #BFEFFF ;
+    padding: 30px;
+}
+section#about p{
+    margin: 10px auto 10px auto;
+}
+
+

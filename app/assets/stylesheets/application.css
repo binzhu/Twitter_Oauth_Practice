@@ -63,9 +63,63 @@ table {
 #contianer{
     width: 1200px;
     margin: auto;
+    background: #DFEFFF ;
+    font-family: arial;
+}
+header{
+    padding: 20px;
+    height: 30px;
+    background: #77DDDD ;
+}
+#logo{
+    float: left;
+    font-size: 30px;
+    margin-left: 20px;
 }
 nav{
-    margin-top: 20px;
+    float: right;
 }
+#subnav{
+    margin-top: 30px;
+    margin-left: 100px;
+}
+p{
+    margin: 4px auto 4px auto;
+}
+ul{
+    line-height: 20px;
+    margin-left: 5px;
+}
+li{
+    margin-left: 15px;
+    line-height: 17px;
+    font-size: 15px;
+    list-style:square;
+}
+#search_user{
+    padding-left: 100px;
+    
+}
+#markerAll{
+    
+}
+ul#instructions {
+    font-size: small;
+    margin-bottom: 5px; 
+}
+ul#instructions li{
+    margin-left: 20px;
+    margin-top: 5px;
+    list-style-type:decimal;
+    
+}
+footer{
+    text-align: center;
+    height: 100px;
+    padding-top: 30px;
+    font-size: 13px;
+    background: #77DDDD;
+}
+
 
 

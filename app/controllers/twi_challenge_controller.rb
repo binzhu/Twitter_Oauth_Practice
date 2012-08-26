@@ -3,7 +3,6 @@ class TwiChallengeController < ApplicationController
     if !session[:user_id].nil?
           #using api call #1 get_firend_id defined below
           all_friend_ids = get_friend_id
-          
           if all_friend_ids.nil? || all_friend_ids.count < 0
             @error_msg = "no friend retrieved, please contact app admin"
           else
@@ -25,6 +24,7 @@ class TwiChallengeController < ApplicationController
         end
         @pagemsg = "Displaying " + ((index-1)*20 + 1).to_s + " .. " + end_index
         
+        
         #puts "current page is " + index.to_s
         @friend_ids = friend_pagination_array[index-1]
           
@@ -36,15 +36,28 @@ class TwiChallengeController < ApplicationController
             fids += @friend_ids[i].to_s
             fids += "," unless i == fcnt
           end# end for loop to get friend id string
-          @profile = get_detail_info(fids)
+          @profile = []
+          friend_info = get_detail_info(fids)
+          
+          unsorted_ids = []
+          for i in 0..fcnt-1 do 
+            unsorted_ids << friend_info[i]["id"]
+          end
+          
+          @friend_ids.each do |fid|
+            @profile << friend_info[unsorted_ids.index(fid)]
+          end
+        
         end#end if no friend retrieved  
     end#end if session isset
   end
   
   def search
-    if request.post?
-      @profile= search_user(URI.escape(params[:searchterm][:search]))
-  
+    if params[:searchterm][:search].length < 1
+      redirect_to :back, notice: "please input search keyword"
+      return
+    else
+      @profile= search_user(params[:searchterm][:search])
     end
   end
   
@@ -52,11 +65,9 @@ class TwiChallengeController < ApplicationController
   
   #0 api call to get request token for first time user
   def request_token
-    #o =  [('a'..'z'),('A'..'Z'),("0".."9")].map{|i| i.to_a}.flatten
-    #oauth_nonce = (0..50).map{ o[rand(o.length)]  }.join
-    #@callback_signedin = "http://localhost:3000"
-    
-    @callback_url = "http://localhost:3000/twitter/callback"
+    localcallback = "http://localhost:3000/twitter/callback"
+    herokucallback = "http://twitterapi.herokuapp.com/twitter/callback"
+    @callback_url = herokucallback
     @consumer = OAuth::Consumer.new(ENV['consumer_key'],ENV['consumer_secret'],:site=>"https://api.twitter.com")
     @consumer.options[:authenticate_path] = "/oauth/authenticate"
     
@@ -76,7 +87,7 @@ class TwiChallengeController < ApplicationController
         req = Typhoeus::Request.new(uri,
                                   :method =>"get",
                                   :params =>{:cursor=>"-1", :screen_name=>crt_user.handler})      
-      sign_request(req,uri)
+      #sign_request(req,uri)
       hydra = Typhoeus::Hydra.new
       hydra.queue(req)
       hydra.run
@@ -94,44 +105,40 @@ class TwiChallengeController < ApplicationController
       hydra = Typhoeus::Hydra.new
       hydra.queue(req)
       hydra.run
+      JSON.parse(req.response.body)
       
-      profile_list = Array.new
-
-      JSON.parse(req.response.body).each do |raw|
-        profile_list.push([
-          raw["id"].to_s,
-          raw["profile_image_url"].to_s,
-          raw["name"].to_s,
-          raw["screen_name"].to_s]
-        )# prepare to cash into database, not sure
-      end
-      profile_list.sort!{|x,y| x[0]<=>y[0]}    
   end
   
   #3 api call to unfollow all marked friends
   def unfollow
     if request.post?
-      unf_ids = params[:unfollow]
+      @unf_ids = params[:unfollow]
       
-      unf_str = ""
-      unf_cnt = unf_ids.length - 1
-      for i in 0..unf_cnt
-        unf_str +=unf_ids[i].to_s
-        unf_str += "," unless unf_cnt == i
+      #unf_str = ""
+      #unf_cnt = unf_ids.length - 1
+      #for i in 0..unf_cnt
+      #  unf_str +=unf_ids[i].to_s
+      #  unf_str += "," unless unf_cnt == i
+      #end
+      if @unf_ids.nil? || @unf_ids.length < 1
+      else
+        @unf_ids.each do |unfo|    
+          hydra = Typhoeus::Hydra.new
+          uri = "http://api.twitter.com/1/friendships/destroy.json"
+                req = Typhoeus::Request.new(uri,
+                                            :method =>"post",
+                                            :params =>{:user_id=>unfo, :include_entities=>"true"})
+                
+          sign_request(req,uri)
+          hydra.queue(req)
+          hydra.run
+          puts req.response.inspect
+        end
       end
-          
-      hydra = Typhoeus::Hydra.new
-      uri = "http://api.twitter.com/1/friendships/destroy.json"
-            req = Typhoeus::Request.new(uri,
-                                        :method =>"post",
-                                        :params =>{:user_id=>unf_str, :include_entities=>"true"})
-            
-      sign_request(req,uri)
-      hydra.queue(req)
-      hydra.run
-      puts req.response.inspect
     end
-    redirect_to :action=>"index"
+    respond_to do |format|
+      format.js
+    end
   end
 
   def search_user(q)
@@ -159,25 +166,26 @@ class TwiChallengeController < ApplicationController
   end
   def follow
     if request.post?
-      fo_ids = params[:follow]
+      fo_ids = params[:follow] 
+      #fo_str = ""
+      #fo_cnt = fo_ids.length - 1
+      #for i in 0..fo_cnt
+      #  fo_str +=fo_ids[i].to_s
+      #  fo_str += "," unless fo_cnt == i
+      #end
       
-      fo_str = ""
-      fo_cnt = fo_ids.length - 1
-      for i in 0..fo_cnt
-        fo_str +=fo_ids[i].to_s
-        fo_str += "," unless fo_cnt == i
+      fo_ids.each do  |fid|
+        hydra = Typhoeus::Hydra.new
+        uri = "http://api.twitter.com/1/friendships/create.json"
+              req = Typhoeus::Request.new(uri,
+                                          :method =>"post",
+                                          :params =>{:user_id=>fid, :include_entities=>"true"})
+              
+        sign_request(req,uri)
+        hydra.queue(req)
+        hydra.run
+        puts req.response.inspect
       end
-          
-      hydra = Typhoeus::Hydra.new
-      uri = "http://api.twitter.com/1/friendships/create.json"
-            req = Typhoeus::Request.new(uri,
-                                        :method =>"post",
-                                        :params =>{:user_id=>fo_str, :include_entities=>"true"})
-            
-      sign_request(req,uri)
-      hydra.queue(req)
-      hydra.run
-      puts req.response.inspect
     end
     redirect_to :action=>"index"    
   end
@@ -200,6 +208,9 @@ class TwiChallengeController < ApplicationController
   
   def oauth_params
       {:consumer => consumer, :token => session[:access_token]}
+  end
+  def convert_zones(to_zone)
+     to_zone_time = to_zone.localtime
   end
   
   

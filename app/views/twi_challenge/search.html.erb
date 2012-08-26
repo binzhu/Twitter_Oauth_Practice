@@ -8,16 +8,21 @@
   
   <section id="user-list">
     <%= form_tag '/twi_challenge/follow' do %>
+    <%=link_to "Mark All", "#", :id=>"markall"%>
     <%@profile.each do |prof|%>
       <%if !prof.nil?%>
-        <div class="user-profile">
-          <%=image_tag prof[1]%>
-          <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
-          <%= check_box_tag 'follow[]', prof[0]%>
+        <div class="user-profile-padding">
+          <div class="user-profile">
+            <%=image_tag prof[1]%>
+            <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
+            <%= check_box_tag 'follow[]', prof[0]%>
+          </div>
         </div>
       <%end%><!--end if prof[i] is nil-->
     <%end%><!--end profile each loop -->
-    <%=submit_tag  "Follow All", :id=>"mass_follow"%>
+    <%=submit_tag  "Follow Selected", :id=>"mass_follow", :class=>"slow"%>
+    <div id="waitMsg"></div>
+    <div class="fix"></div>
   <%end%><!--end form-->
   
   </section>

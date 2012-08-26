@@ -1,40 +1,59 @@
 <%if !session[:user_id].nil?%>
-
-<br />
-<br />
   <!--image_tag @image["profile_image_url"]-->
   <%if @profile.nil? || @profile.count<1%>
     <%=@error_msg%>
   <%else%>
-  
-  <section id="user-list">
     <div id="friend_pagination">
       <% for i in 1..@pagcnt%>
         <div class="pagenum" id="<%=i%>">
         <%if params[:page] != i.to_s%>
           <%=link_to i, :page=>i%>
         <%else%>
-          <span class="crt_page"><%=i%></span>
+          <div class="crt_page"><%=i%></div>
         <%end%>
         </div><!-- pagenum div end-->
       <%end%>
       <%=@pagemsg%>
     </div><!--Pagination div end-->
-    <%= form_tag '/twi_challenge/unfollow' do %>
-    <%@profile.each do |prof|%>
-      <%if !prof.nil?%>
-        <div class="user-profile">
-          <%=image_tag prof[1]%>
-          <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
-          <%= check_box_tag 'unfollow[]', prof[0]%>
-        </div>
-      <%end%><!--end if prof[i] is nil-->
-    <%end%><!--end profile each loop -->
-    <%=submit_tag  "Unfollow All", :id=>"mass_unfollow"%>
+    
+    
+  <section id="user-list">
+
+    <%= form_tag '/twi_challenge/unfollow', :remote => true do %>
+    <div id="userbox">
+      <%@profile.each do |prof|%>
+        <%if !prof.nil?%>
+          <div class="user-profile-padding">
+            <div class="user-profile">
+              <%=image_tag prof["profile_image_url"]%>
+              <%=link_to "@" + prof["name"], "https://twitter.com/"+prof["screen_name"]%>
+              <%= check_box_tag 'unfollow[]', prof["id"]%>
+            </div>
+          </div>
+        <%end%><!--end if prof[i] is nil-->
+      <%end%><!--end profile each loop -->
+    </div><!--end div userbox-->
+    
+    <div id="sidebox">
+      <div id="instruction">
+        <h2>Instructions:</h2>
+        <ul id="instructions">
+          <li>Click your friend to mark, or click "Marker All" to mark all friends, then click the "Unfollow Selected" Button to unfollow all friends that have been marked.</li>
+          <li>Warning, action is not reversible, you will need to search for them to follow them back.</li>
+        </ul>
+      </div>
+      <%=submit_tag  "Unfollow Selected", :id=>"mass_unfollow",:class=>"slow"%>
+      <div id="waitMsg"></div>
+      <div id="markerAll"><%=link_to "Mark All", "#", :id=>"markall"%></div>
+      
+    </div><!--end div sidebox-->
+    <div class="fix"></div>
   <%end%><!--end form-->
   
   </section>
-  <%end%>
+  
+  
+  <%end%><!--end if profile not returned-->
   <!--debug info start-->
   <%if false%><!--debug info closed-->
   <%=session[:request_token].inspect%>

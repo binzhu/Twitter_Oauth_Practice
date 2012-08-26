@@ -1,4 +1,6 @@
 TwitterApi::Application.routes.draw do
+  get "twi_challenge/about"
+  
   get "twi_challenge/crt_user"
   
   post "twi_challenge/search"

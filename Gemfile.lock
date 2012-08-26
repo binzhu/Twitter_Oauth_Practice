@@ -30,7 +30,6 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.2)
     builder (3.0.0)
-    certified (0.1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -43,8 +42,6 @@ GEM
       multi_json (~> 1.0)
     ffi (1.1.5)
     hike (1.2.1)
-    http (0.2.0)
-      certified
     i18n (0.6.0)
     journey (1.0.4)
     jquery-rails (2.1.1)
@@ -116,7 +113,6 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
-  http
   jquery-rails
   oauth
   rails (= 3.2.6)

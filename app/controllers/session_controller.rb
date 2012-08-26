@@ -32,6 +32,6 @@ class SessionController < ApplicationController
 
   def signout
     reset_session
-    redirect_to :controller=>"twi_challenge", :action=>"index"
+    redirect_to "/twi_challenge/about"
   end
 end

@@ -8,21 +8,34 @@
 </head>
 <body>
   <div id="contianer">
-    <nav>
-      <%if !session[:user_id].nil?%>
-      Signed in as
-      <%end%>
-      <%=authlink%>
-    </nav>
+    <header>
+      <div id="logo">Follow Friend on Twitter</div>
+      <nav>
+        <%if !session[:user_id].nil?%>
+        Signed in as
+        <%end%>
+        <%=authlink%>
+      </nav>
+    </header>
+    <div class="fix"></div>
     
-    <div id="search_user">
-    <%= form_tag '/twi_challenge/search' do %>
-      Search for new twitter users to follow: <%=text_field "searchterm", "search"%>
-      <%=submit_tag "search"%>
-    <%end%>
+    <div id="subnav">
+      <%=subnav_links%>
     </div>
-    
+    <%if !session[:user_id].nil?%>  
+      <div id="search_user">
+      <%= form_tag '/twi_challenge/search', :method=>"get" do %>
+        Search for new twitter users to follow: <%=text_field "searchterm", "search"%>
+        <%=submit_tag "search", :id=>"search"%>
+      <%end%>
+      <div id="searchMsg"><%=notice%></div>
+      </div>
+    <%end%>
+
     <%= yield %>
+    <footer>
+      Bin Zhu - practice interacting with Twitter Oauth API. &copy;<%=Time.now.year%>
+    </footer>
   </div>
 </body>
 </html>

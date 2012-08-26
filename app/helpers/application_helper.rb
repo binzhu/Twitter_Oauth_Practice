@@ -12,13 +12,29 @@ module ApplicationHelper
   def signout_twitter
    link_to "Signout of twitter", "https://twitter.com/logout", :id=>"signout_twitter"
   end
-  
+
   
   def authlink
     if !session[:user_id].nil?
       username  + " | " + signout + " | " + signout_twitter
     else
       signin
+    end
+  end
+
+  def home
+    link_to "Friend List", :action=>"index"
+  end
+  
+  def about
+    link_to "About", "about"
+  end
+  
+  def subnav_links
+    if !session[:user_id].nil?
+      home + " | " + about
+    else
+      about
     end
   end
   
