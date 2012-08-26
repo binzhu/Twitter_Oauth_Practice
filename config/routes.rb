@@ -1,13 +1,28 @@
 TwitterApi::Application.routes.draw do
+  get "twi_challenge/crt_user"
+  
+  post "twi_challenge/search"
+  
+  get "twi_challenge/search"
+  
+  get "twi_challenge/unfollow"
+  
+  post "twi_challenge/unfollow"
   
   get "session/signout"
+  
   match "twitter/callback" => "session#create"
+  
   get "twi_challenge/callback"
+  
   get "twi_challenge/request_token"
+  
   get "twi_challenge/index"
 
   get "twi_challenge/unfollow"
-
+  
+  post "twi_challenge/follow"
+  
   get "twi_challenge/follow"
 
   # The priority is based upon order of creation:

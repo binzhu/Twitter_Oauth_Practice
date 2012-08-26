@@ -3,7 +3,7 @@ class SessionController < ApplicationController
     #puts "create called!"
     #@access_token is user specific
     @access_token = session[:request_token].get_access_token
-    
+    puts @access_token.inspect
     #store the access token in session
     session[:access_token] = @access_token
     
@@ -11,7 +11,6 @@ class SessionController < ApplicationController
     user = TwiUser.find_by_uid(@access_token.params[:user_id])
     if user
       session[:user_id]=user.id
-      
       #update token in database upon login, not sure usefulness yet
       user.access_token = @access_token.token
       user.token_secret = @access_token.secret
@@ -28,8 +27,7 @@ class SessionController < ApplicationController
       user.save
       session[:user_id]=user.id
     end
-    
-    redirect_to :controller=>"twi_challenge", :action=>"index"
+    redirect_to :controller=>"twi_challenge", :action=>"index", :state=>"index"
   end
 
   def signout

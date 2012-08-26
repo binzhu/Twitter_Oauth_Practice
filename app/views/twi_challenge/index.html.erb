@@ -1,25 +1,40 @@
 <%if !session[:user_id].nil?%>
+
 <br />
 <br />
   <!--image_tag @image["profile_image_url"]-->
+  <%if @profile.nil? || @profile.count<1%>
+    <%=@error_msg%>
+  <%else%>
+  
   <section id="user-list">
     <div id="friend_pagination">
       <% for i in 1..@pagcnt%>
         <div class="pagenum" id="<%=i%>">
+        <%if params[:page] != i.to_s%>
           <%=link_to i, :page=>i%>
-        </div>
+        <%else%>
+          <span class="crt_page"><%=i%></span>
+        <%end%>
+        </div><!-- pagenum div end-->
       <%end%>
-    </div>
-  <%@profile.each do |prof|%>
-    <%if !prof.nil?%>
-      <div class="user-profile">
-        <%=image_tag prof[1]%>
-        <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
-        <%=prof[0]%>
-      </div>
-    <%end%>
-  <%end%>
+      <%=@pagemsg%>
+    </div><!--Pagination div end-->
+    <%= form_tag '/twi_challenge/unfollow' do %>
+    <%@profile.each do |prof|%>
+      <%if !prof.nil?%>
+        <div class="user-profile">
+          <%=image_tag prof[1]%>
+          <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
+          <%= check_box_tag 'unfollow[]', prof[0]%>
+        </div>
+      <%end%><!--end if prof[i] is nil-->
+    <%end%><!--end profile each loop -->
+    <%=submit_tag  "Unfollow All", :id=>"mass_unfollow"%>
+  <%end%><!--end form-->
+  
   </section>
+  <%end%>
   <!--debug info start-->
   <%if false%><!--debug info closed-->
   <%=session[:request_token].inspect%>

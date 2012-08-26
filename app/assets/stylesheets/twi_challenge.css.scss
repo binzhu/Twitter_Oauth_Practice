@@ -20,3 +20,12 @@ section#user-list{
 .pagenum{
     display: inline;
 }
+span.crt_page{
+    background: grey;
+}
+#search_user{
+    margin: 10px auto 10px auto;
+}
+#search_user form{
+    margin: auto;
+}

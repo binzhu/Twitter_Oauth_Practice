@@ -19,10 +19,7 @@ $(document).ready(function(){
         //alert("clicked!");
         //alert($(this).attr("href"));
         window.open ($(this).attr("href"), "mywindow","width=600,height=600,centerBrowser=1");
-        
         return false
-        
         })
-    
     
 })

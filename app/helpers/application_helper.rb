@@ -26,5 +26,4 @@ module ApplicationHelper
     [('a'..'z'),('A'..'Z'),("0".."9")].map{|i| i.to_a}.flatten
   end
   
-
 end

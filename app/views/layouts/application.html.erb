@@ -14,6 +14,14 @@
       <%end%>
       <%=authlink%>
     </nav>
+    
+    <div id="search_user">
+    <%= form_tag '/twi_challenge/search' do %>
+      Search for new twitter users to follow: <%=text_field "searchterm", "search"%>
+      <%=submit_tag "search"%>
+    <%end%>
+    </div>
+    
     <%= yield %>
   </div>
 </body>

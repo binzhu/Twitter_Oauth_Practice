@@ -1,0 +1,26 @@
+<%if !session[:user_id].nil?%>
+<br />
+<br />
+  <!--image_tag @image["profile_image_url"]-->
+  <%if @profile.nil? || @profile.count<1%>
+    <%=@error_msg%>
+  <%else%>
+  
+  <section id="user-list">
+    <%= form_tag '/twi_challenge/follow' do %>
+    <%@profile.each do |prof|%>
+      <%if !prof.nil?%>
+        <div class="user-profile">
+          <%=image_tag prof[1]%>
+          <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
+          <%= check_box_tag 'follow[]', prof[0]%>
+        </div>
+      <%end%><!--end if prof[i] is nil-->
+    <%end%><!--end profile each loop -->
+    <%=submit_tag  "Follow All", :id=>"mass_follow"%>
+  <%end%><!--end form-->
+  
+  </section>
+  <%end%>
+
+<%end%>
