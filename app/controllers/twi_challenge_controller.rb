@@ -214,7 +214,8 @@ class TwiChallengeController < ApplicationController
   def convert_zones(to_zone)
      to_zone_time = to_zone.localtime
   end
-  
+  def about
+  end
   
   ######################################################
   #attempted to write oauth lib

@@ -27,7 +27,7 @@ module ApplicationHelper
   end
   
   def about
-    link_to "About", "about"
+    link_to "About", "/twi_challenge/about"
   end
   
   def subnav_links
