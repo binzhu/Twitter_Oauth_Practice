@@ -23,7 +23,7 @@ module ApplicationHelper
   end
 
   def home
-    link_to "Friend List", :action=>"index"
+    link_to "Friend List", :action=>"index", :page=> "1"
   end
   
   def about

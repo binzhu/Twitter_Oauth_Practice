@@ -27,7 +27,7 @@ class SessionController < ApplicationController
       user.save
       session[:user_id]=user.id
     end
-    redirect_to :controller=>"twi_challenge", :action=>"index", :state=>"index"
+    redirect_to :controller=>"twi_challenge", :action=>"index", :page=>"1"
   end
 
   def signout

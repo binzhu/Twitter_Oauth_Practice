@@ -38,10 +38,10 @@
       <div id="instruction">
         <h2>Instructions:</h2>
         <ul id="instructions">
-          <li>Click your friend to mark, or click "Marker All" to mark all friends, then click the "Unfollow Selected" Button to unfollow all friends that have been marked.</li>
+          <li>Click your friend to mark(highlight), or click "Marker All" to mark all friends, then click the "Unfollow Selected" Button to unfollow all friends that have been marked.</li>
           <li>Warning, action is not reversible, you will need to search for them to follow them back.</li>
         </ul>
-      </div>
+      </div><!--div instruction end-->
       <%=submit_tag  "Unfollow Selected", :id=>"mass_unfollow",:class=>"slow"%>
       <div id="waitMsg"></div>
       <div id="markerAll"><%=link_to "Mark All", "#", :id=>"markall"%></div>

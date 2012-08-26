@@ -57,16 +57,18 @@ class TwiChallengeController < ApplicationController
       redirect_to :back, notice: "please input search keyword"
       return
     else
+      
+      params[:searchterm][:search]
       @profile= search_user(params[:searchterm][:search])
+      @search_explained = "you searched keyword \"" + params[:searchterm][:search] + "\" Returned "  + @profile.length.to_s + " results"
     end
   end
-  
 
   
   #0 api call to get request token for first time user
   def request_token
     localcallback = "http://localhost:3000/twitter/callback"
-    herokucallback = "http://twitterapi.herokuapp.com/twitter/callback"
+    herokucallback = "http://twitter-fobot.herokuapp.com/twitter/callback"
     @callback_url = herokucallback
     @consumer = OAuth::Consumer.new(ENV['consumer_key'],ENV['consumer_secret'],:site=>"https://api.twitter.com")
     @consumer.options[:authenticate_path] = "/oauth/authenticate"
@@ -187,12 +189,12 @@ class TwiChallengeController < ApplicationController
         puts req.response.inspect
       end
     end
-    redirect_to :action=>"index"    
+    redirect_to :action=>"index", :page=>"1"    
   end
   
   def crt_user
-    #TwiUser.find(session[:user_id])
-    TwiUser.first
+    TwiUser.find(session[:user_id])
+    #TwiUser.first
   end
 
   def sign_request(req,uri)

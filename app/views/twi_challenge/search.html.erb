@@ -1,6 +1,7 @@
 <%if !session[:user_id].nil?%>
 <br />
 <br />
+  <div id="search_explain"><%=@search_explained%>  <%=link_to "Back to friend list", :action=>"index", :page=>"1"%></div>
   <!--image_tag @image["profile_image_url"]-->
   <%if @profile.nil? || @profile.count<1%>
     <%=@error_msg%>
@@ -8,20 +9,33 @@
   
   <section id="user-list">
     <%= form_tag '/twi_challenge/follow' do %>
-    <%=link_to "Mark All", "#", :id=>"markall"%>
-    <%@profile.each do |prof|%>
-      <%if !prof.nil?%>
-        <div class="user-profile-padding">
-          <div class="user-profile">
-            <%=image_tag prof[1]%>
-            <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
-            <%= check_box_tag 'follow[]', prof[0]%>
+    <div id="userbox">    
+      <%@profile.each do |prof|%>
+        <%if !prof.nil?%>
+          <div class="user-profile-padding">
+            <div class="user-profile">
+              <%=image_tag prof[1]%>
+              <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
+              <%= check_box_tag 'follow[]', prof[0]%>
+            </div>
           </div>
-        </div>
-      <%end%><!--end if prof[i] is nil-->
-    <%end%><!--end profile each loop -->
+        <%end%><!--end if prof[i] is nil-->
+      <%end%><!--end profile each loop -->
+    </div><!--user box div end-->
+    
+    <div id="sidebox">
+     <div id="instruction">
+        <h2>Instructions:</h2>
+        <ul id="instructions">
+          <li>Click your friend to mark(highlight), or click "Marker All" to mark all friends, then click the "follow Selected" Button to follow all friends that have been marked.</li>
+          <li>Warning, action is not reversible, you will need to find them in your friend list and unfollow them there if you want.</li>
+        </ul>
+      </div><!--div instruction end-->
+      
     <%=submit_tag  "Follow Selected", :id=>"mass_follow", :class=>"slow"%>
     <div id="waitMsg"></div>
+    <div id="markerAll"><%=link_to "Mark All", "#", :id=>"markall"%></div>
+    </div><!--sidebox div end-->
     <div class="fix"></div>
   <%end%><!--end form-->
   
