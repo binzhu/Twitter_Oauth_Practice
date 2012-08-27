@@ -1,24 +1,30 @@
 <%if !session[:user_id].nil?%>
-<br />
-<br />
+
   <div id="search_explain"><%=@search_explained%>  <%=link_to "Back to friend list", :action=>"index", :page=>"1"%></div>
   <!--image_tag @image["profile_image_url"]-->
-  <%if @profile.nil? || @profile.count<1%>
+  <%if @profile.nil? %>
     <%=@error_msg%>
   <%else%>
-  
+  <div id="instructionMsg"><%=@instruction_msg%></div> 
   <section id="user-list">
     <%= form_tag '/twi_challenge/follow' do %>
     <div id="userbox">    
       <%@profile.each do |prof|%>
         <%if !prof.nil?%>
           <div class="user-profile-padding">
-            <div class="user-profile">
+            <div class="user-profile posotion">
+              <div class="sch-prof-img">
               <%=image_tag prof[1]%>
+              </div>
+              <div class="sch-usrname posotion">
               <%=link_to "@" + prof[2], "https://twitter.com/"+prof[3]%>
+              </div>
+              <div id="sch-hover_unfollow_text" class="posotion">
+                follow
+              </div>
               <%= check_box_tag 'follow[]', prof[0]%>
-            </div>
-          </div>
+            </div><!--div user profile end-->
+          </div><!--user profile padding end-->
         <%end%><!--end if prof[i] is nil-->
       <%end%><!--end profile each loop -->
     </div><!--user box div end-->
@@ -33,6 +39,7 @@
       </div><!--div instruction end-->
       
     <%=submit_tag  "Follow Selected", :id=>"mass_follow", :class=>"slow"%>
+    <div id="unfollow-fm-error"></div>
     <div id="waitMsg"></div>
     <div id="markerAll"><%=link_to "Mark All", "#", :id=>"markall"%></div>
     </div><!--sidebox div end-->

@@ -1,7 +1,9 @@
 <%if !session[:user_id].nil?%>
   <!--image_tag @image["profile_image_url"]-->
-  <%if @profile.nil? || @profile.count<1%>
+  <%if @profile.nil? %>
     <%=@error_msg%>
+  <%elsif @profile.count == 0 %>
+    <div id="noFriendMsg">You don't have any friend, try a search and follow some!</div>
   <%else%>
     <div id="friend_pagination">
       <% for i in 1..@pagcnt%>
@@ -13,10 +15,10 @@
         <%end%>
         </div><!-- pagenum div end-->
       <%end%>
-      <%=@pagemsg%>
+      <%=@pagemsg%> of <%=@total_friends_cnt%> users you followed.
     </div><!--Pagination div end-->
     
-    
+  <div id="instructionMsg"><%=@instruction_msg%></div> 
   <section id="user-list">
 
     <%= form_tag '/twi_challenge/unfollow', :remote => true do %>
@@ -24,9 +26,16 @@
       <%@profile.each do |prof|%>
         <%if !prof.nil?%>
           <div class="user-profile-padding">
-            <div class="user-profile">
-              <%=image_tag prof["profile_image_url"]%>
-              <%=link_to "@" + prof["name"], "https://twitter.com/"+prof["screen_name"]%>
+            <div class="user-profile posotion" id="<%=prof["id"]%>">
+              <div class="prof-img">
+                <%=image_tag prof["profile_image_url"]%>
+              </div>
+              <div class="usrname posotion">
+                <%=link_to "@" + prof["name"], "https://twitter.com/"+prof["screen_name"]%>
+              </div>
+              <div id="hover_unfollow_text" class="posotion">
+                following
+              </div>
               <%= check_box_tag 'unfollow[]', prof["id"]%>
             </div>
           </div>
@@ -43,6 +52,7 @@
         </ul>
       </div><!--div instruction end-->
       <%=submit_tag  "Unfollow Selected", :id=>"mass_unfollow",:class=>"slow"%>
+      <div id="unfollow-fm-error"></div>
       <div id="waitMsg"></div>
       <div id="markerAll"><%=link_to "Mark All", "#", :id=>"markall"%></div>
       

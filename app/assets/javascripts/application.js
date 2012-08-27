@@ -21,6 +21,8 @@
         }
         
 $(document).ready(function(){
+    $("input[type=checkbox]").hide();
+    
     
     //popup window for signout of twitter account
     $('#signout_twitter').click(function(e){
@@ -37,8 +39,9 @@ $(document).ready(function(){
         })
     
     //hide all checkboxes, highlight instead
-    $("input[type=checkbox]").hide();
     
+    
+    //user profile for index page
     //clicking on the user profile will act as clicking the checkboxes
     $('.user-profile').click(function(){
         //alert("clicked");
@@ -46,11 +49,32 @@ $(document).ready(function(){
         if (chkbox.attr("checked") == "checked"){
             chkbox.prop("checked", false);
             $(this).css("background","");
+             $(this).children("div#hover_unfollow_text.posotion").text("following");
         }else{
+            $(this).children("div#hover_unfollow_text.posotion").text("unfollow");
             chkbox.prop("checked", true);
             $(this).css("background","#66CCFF");
         }
         })
+    
+    //hover to change text from following to unfollow
+    $('.user-profile').hover(
+        function(){
+            var chkbox = $(this).children("input[type=checkbox]")
+        //alert("hovered!");
+        if(chkbox.attr("checked") != "checked"){
+            $(this).children("div#hover_unfollow_text.posotion").text("unfollow");
+            }
+        }, 
+         function () {
+            var chkbox = $(this).children("input[type=checkbox]")
+        if(chkbox.attr("checked") != "checked"){
+            $(this).children("div#hover_unfollow_text.posotion").text("following");
+            }
+         }    
+    )
+    
+    
     
     //flag for mark all 
     var gToggleCheck = false
@@ -62,6 +86,7 @@ $(document).ready(function(){
         gToggleCheck = !gToggleCheck
 
         if(gToggleCheck){
+                $("div#hover_unfollow_text").text("unfollow")
                 $("#markall").text("Unmark All");
                 $("input[type=checkbox]").each(function(){
                     //alert("get stuff");
@@ -69,6 +94,7 @@ $(document).ready(function(){
                     $(this).parent().css("background","#66CCFF");
                     })                
            }else{
+                $("div#hover_unfollow_text").text("following")
                 $("#markall").text("Mark All");
                 $("input[type=checkbox]").each(function(){
                     //alert("get stuff");
@@ -80,19 +106,37 @@ $(document).ready(function(){
         })//mark all click event over
     
     $('input[type=submit].slow').click(function(e){
-        
-        $("#waitMsg").text("Processing, please wait");
-        $("#waitMsg").show();
-        $("#waitMsg").append('<img src="/assets/loading.gif" />')
+        var check_cnt = $('input[type=checkbox]').filter(':checked').length
+        if (check_cnt == 0){
+            $('#unfollow-fm-error').text("You need to select at least one friend!");
+            return false;
+        }else{
+            $('#unfollow-fm-error').text("");
+            $("#waitMsg").text("Processing, please wait");
+            $("#waitMsg").show();
+            $("#waitMsg").append('<img src="/assets/loading.gif" />');
+        }
         })
+    $('input#mass_follow.slow').click(function(e){
+        var check_cnt = $('input[type=checkbox]').filter(':checked').length
+        if (check_cnt == 0){
+            $('#unfollow-fm-error').text("You need to select at least one friend!");
+            return false;
+        }else{
+            $('#unfollow-fm-error').text("");
+            $("#waitMsg").text("Processing, please wait");
+            $("#waitMsg").show();
+            $("#waitMsg").append('<img src="/assets/loading.gif" />');
+        }
+        })    
     
     $('input#search').click(function(e){
-        if ($(this).prev().val().length()<1)
-        {
+        if ($(this).prev().val().length<1)
+        { 
             e.preventDefault();
-            $(this).parent().next().text("Please input search keyword")
+            $(this).parent().next().text("Please input search keyword");
             setTimeout(function(){
-                $(this).parent().next().text("")
+                $(this).parent().next().text("");
                 },2000)
         }else{
         window.location.href =$(this).parent().attr("action") + $(this).prev().val()

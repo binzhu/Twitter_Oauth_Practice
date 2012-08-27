@@ -11,6 +11,12 @@ section#user-list{
     background-color: #BFEFFF ;
     
 }
+#noFriendMsg{
+    margin: 50px auto 100px 100px ;
+}
+#instructionMsg{
+    margin: 20px auto  10px 100px;
+}
 .user-profile-padding{
     width: 330px;
     float: left;
@@ -18,12 +24,35 @@ section#user-list{
     padding: 10px;
     /*background: lightgreen;*/
 }
-.user-profile{
+.posotion{
+    position: absolute;
+}
+.user-profile,.sch-user-profile{
     width: 300px;
     background: #B2DFEE ;
     margin-left: 10px;
+    z-index: 10;
 }
-.user-profile:hover{
+#hover_unfollow_text,#sch-hover_unfollow_text{
+    
+    margin-top: 15px;
+    margin-left: 220px;
+    color:grey;
+    z-index: 0;
+}
+.prof-img, .sch-prof-img{
+    /*background: lime;*/
+    width:48px;
+    float: left;
+    z-index: 10;
+}
+.usrname,.sch-usrname{
+    margin-top: 10px;
+    float: right;
+    display: inline;
+    
+}
+.user-profile:hover,.sch-user-profile:hover{
     background: #88DDDD  ;
     cursor: pointer;
 }
@@ -40,7 +69,17 @@ section#user-list{
     background: #B2DFEE;
 }
 #search_explain{
+    height: 30px;
     margin-left: 100px;
+}
+#searchMsg,{
+    margin-left: 330px;
+    font-size: 15px;
+    color: grey;
+}
+#unfollow-fm-error{
+    font-size: 15px;
+    color: grey;
 }
 #search_user{
     margin: 10px auto 10px auto;
