@@ -1,6 +1,8 @@
   <section id="about">
-    <p>This is a ruby on rails practice project. The goal is to interactive with Twitter API with <a href="http://en.wikipedia.org/wiki/OAuth" title="OAuth Wikipedia">OAuth</a> Authentication.</p>
-    <p>Github Link:<a href="https://github.com/binzhu/Twitter_Oauth_Practice">Twitter_Oauth_Practice</a></p>
+    <p>This is a ruby on rails practice project. The goal is to interact with Twitter API using <a href="http://en.wikipedia.org/wiki/OAuth" title="OAuth Wikipedia">OAuth</a> Authentication.</p>
+    <p>You can SIGN IN from the link over the top right corner of the page to start playing with it.</p>
+    <p>Any suggestions/comments/critics are welcomed to <a href="mailto:Bin Zhu<binzhu1070@gmail.com>">binzhu1070@gmail.com</a></p>
+    <p>Github Link: <a href="https://github.com/binzhu/Twitter_Oauth_Practice">Twitter_Oauth_Practice</a></p>
     <p>Use cases include.</p>
     <ul>
       Index Page:
@@ -12,7 +14,7 @@
       <li>Put in search keyword to search for users based on screen name. Will redirect to search result page</li>
       Search Result Page:
       <li>Display a list of users based on user's search</li>
-      <li>Same click/cark/mark all function with index page.</li>
+      <li>Same click/mark/mark all function with index page.</li>
       <li>Click "Follow Selected" button to follow selected users.</li>
       <li>Signout from app.</li>
       <li>Signout twitter account.</li> 
@@ -25,4 +27,18 @@
       <li>typhoeus, <a href="https://github.com/typhoeus/typhoeus">github link</a></li>
       <p>A gem to make customized http requests. Used to issue authorized http request to make api calls.</p>
     </ul>
+    <p>Problems encountered:</p>
+    <ul>
+      <li>Before using 'oauth-ruby' gem, I wrote a customizable oauth library, but the authorization header string seems to be not correct.</li>
+      <li>Not sure what to do after user unfollow a list of friends, maybe make another ajax call to fill the space back. And paging status should be updated too.</li>
+      <li>Displaying the current paging status was a pain negotiating over backend and frontend logic, I chose backend login with front helpers.</li>
+    </ul>
+    <p>More thoughts:</p>
+    <ul>
+      <li>Maybe try again to write a oauth authentication library.</li>
+      <li>Take performance more into consideration, specifically pagination algorithm, caching data to reduce request, etc.</li>
+    </ul>
+    <br />
+    <p><a href="http://www.linkedin.com/in/binzhu1070">Bin Zhu</a>  08-26-2012</p>
   </section>
+  

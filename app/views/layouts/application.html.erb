@@ -22,7 +22,7 @@
     <div id="subnav">
       <%=subnav_links%>
     </div>
-    <%if !session[:user_id].nil?%>  
+    <%if !session[:user_id].nil? && params[:action] != 'about'%>  
       <div id="search_user">
       <%= form_tag '/twi_challenge/search', :method=>"get" do %>
         Search for new twitter users to follow: <%=text_field "searchterm", "search"%>

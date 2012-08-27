@@ -1,7 +1,7 @@
 module ApplicationHelper
   
   def signin
-    link_to "sign in with twitter", :controller=>"twi_challenge", :action=>"request_token"
+    link_to "Sign in with twitter", {:controller=>"twi_challenge", :action=>"request_token"},:id=>"signinlink"
   end
   def signout
     link_to "Signout", :controller=>"session", :action=>"signout"
