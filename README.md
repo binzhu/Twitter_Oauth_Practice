@@ -7,7 +7,7 @@ You can SIGN IN from the link over the top right corner of the page to start pla
 
 Any suggestions/comments/critics are welcomed to binzhu1070@gmail.com
 
-Github Link: Twitter_Oauth_Practice
+Demo project hosted on heroku: http://twitter-fobot.herokuapp.com/
 
 Use cases include.
 
