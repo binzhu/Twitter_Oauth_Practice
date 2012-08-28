@@ -1,6 +1,7 @@
 class TwiChallengeController < ApplicationController
   def index
     if !session[:user_id].nil?
+      
           #using api call #1 get_firend_id defined below
           all_friend_ids = get_friend_id
           if all_friend_ids.nil? || all_friend_ids.count < 0
@@ -13,6 +14,7 @@ class TwiChallengeController < ApplicationController
           if @pagcnt*20 == @total_friends_cnt + 20
             @pagcnt -= 1 # special case,
           end
+
         #pagination logic
         if params[:page].to_i <= 1 || params[:page].nil?
           index = 1
@@ -26,53 +28,63 @@ class TwiChallengeController < ApplicationController
         end
         @pagemsg = "Displaying " + ((index-1)*20 + 1).to_s + " .. " + end_index
         
-        
         #puts "current page is " + index.to_s
         @friend_ids = friend_pagination_array[index-1]
           
-          @profile = Array.new
-          fids = ""
+
+          fids = "" # prepare for user_id parameter to search for user info
           fcnt = @friend_ids.count
           
+          #loop through user's friend id to build the paramter string for api call #2 get user info
           for i in 0..fcnt-1 do
             fids += @friend_ids[i].to_s
             fids += "," unless i == fcnt
           end# end for loop to get friend id string
-          @profile = []
-          friend_info = get_detail_info(fids)
+          
+          @profile = [] #initialize the friend info array
+          
+          friend_info = get_detail_info(fids) #store detailed friend info
           
           unsorted_ids = []
           for i in 0..fcnt-1 do 
             unsorted_ids << friend_info[i]["id"]
           end
           
+          #sort the friend id based on the result of api call #1
+          #sorted
           @friend_ids.each do |fid|
-            @profile << friend_info[unsorted_ids.index(fid)]
+            sorted_ids = unsorted_ids.index(fid)
+            @profile << friend_info[sorted_ids]
           end
-        @instruction_msg = "Click to select, and UNFOLLOW them all by hitting unfollow selected button."
-        end#end if no friend retrieved  
+        @instruction_msg = "CLICK to select, and unfollow them all by hitting UNFOLLOW SELECTED button."
+        end#end if no friend retrieved
+    else
+      redirect_to :action=>"about"
     end#end if session isset
   end
   
+  #display search results
   def search
     if params[:searchterm][:search].length < 1
       redirect_to :back, notice: "please input search keyword"
       return
     else
-      
       params[:searchterm][:search]
       @profile= search_user(params[:searchterm][:search])
       @search_explained = "you searched keyword \"" + params[:searchterm][:search] + "\" Returned "  + @profile.length.to_s + " results"
-      @instruction_msg = "Click to select, and FOLLOW them all by hitting follow selected button."
+      @instruction_msg = "Click to SELECT, and follow them all by hitting FOLLOW SELECTED button."
     end
   end
 
-  
+#####################################################
+#api calls defined from here
+#####################################################
+
   #0 api call to get request token for first time user
   def request_token
     localcallback = "http://localhost:3000/twitter/callback"
     herokucallback = "http://twitter-fobot.herokuapp.com/twitter/callback"
-    @callback_url = herokucallback
+    @callback_url = Rails.env == 'production' ? herokucallback : localcallback
     @consumer = OAuth::Consumer.new(ENV['consumer_key'],ENV['consumer_secret'],:site=>"https://api.twitter.com")
     @consumer.options[:authenticate_path] = "/oauth/authenticate"
     
@@ -223,10 +235,10 @@ class TwiChallengeController < ApplicationController
   def about
   end
   
-  ######################################################
-  #attempted to write oauth lib
-  #not successful
-  ######################################################
+######################################################
+#attempted to write oauth lib
+#needs more work
+######################################################
   def unfollow_test
       unf_ids = params[:unfollow]
       
@@ -246,7 +258,7 @@ class TwiChallengeController < ApplicationController
           ["base_url","http://api.twitter.com/1/friendships/destroy.json"]
         ]
       header_string = buildheader(params_before_encode,request_before_encode)
-      puts header_string
+      #puts header_string
       request = Typhoeus::Request.new("http://api.twitter.com/1/friendships/destroy.json",
                                   :method =>"post",
                                   :headers =>{"Authorization" => header_string},
